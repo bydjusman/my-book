@@ -10,21 +10,23 @@ const config = {
 
   // Set the production url of your site here
   url: 'https://bydjusman.github.io',
-  // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub Pages: https://<USERNAME>.github.io/<REPO>/
   baseUrl: '/my-book/',
 
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'bydjusman', // Usually your GitHub org/user name.
-  projectName: 'my-book', // Usually your repo name.
+  // GitHub pages deployment config
+  organizationName: 'bydjusman',
+  projectName: 'my-book',
 
+  // Broken links handling
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
+  // Removed deprecated onBrokenMarkdownLinks
+  // Added markdown hooks instead:
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn', // ya 'throw' agar chaho ke error ho
+    },
+  },
+
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -37,8 +39,6 @@ const config = {
       ({
         docs: {
           sidebarPath: './sidebars.js',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
           editUrl:
             'https://github.com/bydjusman/my-book/edit/main/',
         },
@@ -53,7 +53,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Replace with your project's social card
       image: 'img/docusaurus-social-card.jpg',
       navbar: {
         title: 'Physical AI & Humanoid Robotics',
