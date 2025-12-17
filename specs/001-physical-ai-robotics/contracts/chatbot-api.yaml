@@ -1,0 +1,138 @@
+# Chatbot API Contract
+
+**Service**: RAG Chatbot for Physical AI & Humanoid Robotics Book
+**Version**: 1.0.0
+**Feature**: 001-physical-ai-robotics
+
+## Overview
+
+This contract defines the API for the RAG (Retrieval-Augmented Generation) chatbot that answers questions based on the Physical AI & Humanoid Robotics textbook content.
+
+## Base URL
+
+```
+https://[your-domain]/api/chatbot
+```
+
+## Endpoints
+
+### 1. Query the Chatbot
+
+**POST** `/query`
+
+#### Description
+Submit a question to the RAG chatbot and receive an answer based on the textbook content.
+
+#### Request
+
+```json
+{
+  "query": "string (required) - The question to ask the chatbot",
+  "context": {
+    "module": "string (optional) - Module to search within (e.g., 'module-1-ros2', 'module-2-simulation')",
+    "maxResults": "integer (optional) - Maximum number of context chunks to retrieve (default: 5)",
+    "minRelevance": "float (optional) - Minimum relevance score (0.0-1.0, default: 0.3)"
+  }
+}
+```
+
+#### Response
+
+```json
+{
+  "response": "string - The chatbot's answer to the query",
+  "sources": [
+    {
+      "moduleId": "string - Module ID where information was found",
+      "chapterId": "string - Chapter ID where information was found",
+      "content": "string - Relevant content snippet",
+      "relevance": "float - Relevance score (0.0-1.0)"
+    }
+  ],
+  "queryId": "string - Unique identifier for the query",
+  "timestamp": "string - ISO 8601 timestamp of the response"
+}
+```
+
+#### Success Response (200 OK)
+
+- Returns the chatbot's answer based on textbook content
+- Includes source references for transparency
+- Answers are grounded in book text as required by the constitution
+
+#### Error Responses
+
+- **400 Bad Request**: Query is empty or invalid parameters
+- **429 Too Many Requests**: Rate limit exceeded
+- **500 Internal Server Error**: Processing error
+
+### 2. Health Check
+
+**GET** `/health`
+
+#### Description
+Check the health status of the chatbot service.
+
+#### Response
+
+```json
+{
+  "status": "string - Service status ('healthy', 'degraded', 'unhealthy')",
+  "timestamp": "string - ISO 8601 timestamp",
+  "details": {
+    "vectorIndex": "string - Status of the vector index ('ready', 'indexing', 'error')",
+    "apiConnection": "string - Status of external API connections",
+    "lastIndexUpdate": "string - Timestamp of last index update"
+  }
+}
+```
+
+### 3. List Available Modules
+
+**GET** `/modules`
+
+#### Description
+Get a list of available textbook modules that the chatbot can answer questions about.
+
+#### Response
+
+```json
+{
+  "modules": [
+    {
+      "id": "string - Module identifier (e.g., 'module-1-ros2')",
+      "title": "string - Module title",
+      "description": "string - Brief module description",
+      "wordCount": "integer - Number of words in the module",
+      "lastIndexed": "string - ISO 8601 timestamp of last index update"
+    }
+  ]
+}
+```
+
+## Error Response Format
+
+All error responses follow this format:
+
+```json
+{
+  "error": {
+    "code": "string - Error code",
+    "message": "string - Human-readable error message",
+    "details": "object (optional) - Additional error details"
+  }
+}
+```
+
+## Rate Limiting
+
+- Queries per minute: 60 per IP address
+- Burst limit: 10 requests
+- Headers returned: X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset
+
+## Security
+
+- All requests must include appropriate authentication if required by deployment
+- Content is read-only; no modification endpoints
+- Responses contain only information from the textbook content
+- If answer is not found in book content, the system returns "Not found in book"

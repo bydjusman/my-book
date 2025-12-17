@@ -1,0 +1,14 @@
+# RAG System Requirements
+fastapi==0.104.1
+uvicorn==0.24.0
+langchain==0.0.335
+langchain-community==0.0.28
+python-docx==0.8.11
+pypdf==3.17.2
+chromadb==0.4.15
+sentence-transformers==2.2.2
+torch==2.1.1
+transformers==4.35.2
+numpy==1.24.3
+tiktoken==0.5.1
+python-multipart==0.0.6

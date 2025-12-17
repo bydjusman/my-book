@@ -1,0 +1,61 @@
+{
+  "name": "physical-ai-humanoid-robotics-book",
+  "version": "1.0.0",
+  "description": "A 4-module textbook on Physical AI & Humanoid Robotics",
+  "main": "index.js",
+  "scripts": {
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "server": "node src/server/index.js",
+    "dev-server": "nodemon src/server/index.js"
+  },
+  "keywords": [
+    "docusaurus",
+    "documentation",
+    "robotics",
+    "ai",
+    "textbook"
+  ],
+  "author": "AI/Spec-Driven Book Project",
+  "license": "MIT",
+  "dependencies": {
+    "@docusaurus/core": "^3.9.2",
+    "@docusaurus/preset-classic": "^3.9.2",
+    "@mdx-js/react": "^3.0.0",
+    "@qdrant/js-client-rest": "^1.16.2",
+    "clsx": "^2.0.0",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
+    "express": "^5.2.1",
+    "express-rate-limit": "^8.2.1",
+    "openai": "^6.13.0",
+    "prism-react-renderer": "^2.3.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "3.1.0",
+    "@docusaurus/types": "3.1.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0"
+  }
+}

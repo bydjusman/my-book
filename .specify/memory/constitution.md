@@ -1,55 +1,49 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!-- SYNC IMPACT REPORT
+Version change: N/A (initial creation) → v1.0.0
+Modified principles: N/A (initial creation)
+Added sections: All sections (initial creation)
+Removed sections: None
+Templates requiring updates:
+- .specify/templates/plan-template.md ✅ updated
+- .specify/templates/spec-template.md ✅ updated
+- .specify/templates/tasks-template.md ✅ updated
+- .specify/templates/commands/*.md ✅ reviewed
+- README.md ⚠ pending
+Follow-up TODOs: None
+-->
+
+# AI/Spec-Driven Book with Integrated RAG Chatbot Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Spec-First Workflow
+All development begins with comprehensive specifications before any implementation. The workflow follows constitution → spec → plan → build in strict sequence. Every feature, requirement, and constraint must be documented in spec files before coding begins.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+### II. Beginner-Friendly Accessibility
+Content and code must be accessible to undergraduate CS students and beginner AI developers. Use simple English, avoid advanced mathematics, provide clear explanations, and ensure all concepts build progressively from fundamentals.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### III. Grounded Content (NON-NEGOTIABLE)
+All book content and chatbot responses must be strictly grounded in the book text. No hallucinations or unsupported claims are permitted. The RAG chatbot must only answer from book content, stating "Not found in book" when information is missing.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### IV. Modular and Testable Design
+The book and supporting systems must be built in modular components with clear learning goals. Each chapter should be 1500-2000 words, code examples must be reproducible, and all functionality should be independently testable.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### V. Free-Tier Tool Compliance
+Only free-tier tools and services may be used to ensure accessibility and reproducibility. Technical stack includes Docusaurus, FastAPI, OpenAI Agents/ChatKit SDKs, Qdrant Cloud (Free Tier), and Neon Serverless Postgres.
 
-### [PRINCIPLE_6_NAME]
+### VI. Markdown-Only Content Standard
+All book content must be authored in Markdown format only. No other document formats are permitted to maintain simplicity and version control compatibility.
 
+## Technical Standards
 
-[PRINCIPLE__DESCRIPTION]
+The book will be built with Docusaurus and deployed on GitHub Pages. The RAG chatbot must support full-book, chapter, and selected-text Q&A with clear separation between retrieval and generation phases. The embedded chatbot must work correctly and answers must be grounded in book text.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+## Development Workflow
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
-
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
-
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+All work follows the Spec-Kit Plus methodology using the constitution → spec → plan → tasks → build sequence. Each phase must be completed before proceeding to the next. Code changes require corresponding updates to specifications and plans. All development must align with the core principles and technical stack requirements.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices and guidelines. All team members must comply with these principles. Amendments to this constitution require formal documentation and approval. All pull requests and code reviews must verify compliance with constitutional principles. Complexity must be justified with clear benefits to the target audience.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: v1.0.0 | **Ratified**: 2025-12-16 | **Last Amended**: 2025-12-16
