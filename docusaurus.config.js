@@ -9,14 +9,14 @@ const config = {
   favicon: 'img/logo.png',
 
   // Set the production url of your site here
-  url: 'https://your-book-domain.github.io',
+  url: 'https://bydjusman.github.io',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub Pages: https://<USERNAME>.github.io/<REPO>/
   baseUrl: '/my-book/',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-username', // Usually your GitHub org/user name.
+  organizationName: 'bydjusman', // Usually your GitHub org/user name.
   projectName: 'my-book', // Usually your repo name.
 
   onBrokenLinks: 'throw',
@@ -40,7 +40,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/your-username/my-book/edit/main/',
+            'https://github.com/bydjusman/my-book/edit/main/',
         },
         blog: false, // Disable blog for textbook
         theme: {
@@ -69,7 +69,7 @@ const config = {
             label: 'Textbook',
           },
           {
-            href: 'https://github.com/your-username/my-book',
+            href: 'https://github.com/bydjusman/my-book',
             label: 'GitHub',
             position: 'right',
           },
