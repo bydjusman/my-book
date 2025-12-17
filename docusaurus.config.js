@@ -9,7 +9,7 @@ const config = {
   favicon: 'img/logo.png',
 
   // Set the production url of your site here
-  url: 'https://bydjusman.github.io',
+  url: 'https://bydjusman.github.io/my-book',
   baseUrl: '/my-book/',
 
   // GitHub pages deployment config
