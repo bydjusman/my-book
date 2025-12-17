@@ -9,10 +9,10 @@ const config = {
   favicon: 'img/logo.png',
 
   // Set the production url of your site here
-  url: 'https://bydjusman.github.io/my-book',
-  baseUrl: '/my-book/',
+  url: 'https://my-book-smoky-alpha.vercel.app',
+  baseUrl: '/', // Changed from '/my-book/' for root domain deployment
 
-  // GitHub pages deployment config
+  // Deployment config - can be removed if not deploying to GitHub Pages
   organizationName: 'bydjusman',
   projectName: 'my-book',
 
