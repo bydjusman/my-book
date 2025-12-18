@@ -1,138 +1,90 @@
-# Physical AI & Humanoid Robotics RAG System
+# Physical AI & Humanoid Robotics RAG Chatbot System
 
-This is a Retrieval-Augmented Generation (RAG) system designed to answer questions about the Physical AI & Humanoid Robotics textbook. The system combines document retrieval with language model generation to provide accurate, context-aware responses based on the textbook content.
+This directory contains the RAG (Retrieval-Augmented Generation) chatbot system that answers questions from the "Physical AI & Humanoid Robotics" textbook.
 
-## Features
+## System Architecture
 
-- **Question Answering**: Ask questions about the textbook content and receive relevant answers
-- **Document Upload**: Upload additional documents to enhance the knowledge base
-- **Source Tracking**: Responses include information about which documents the information came from
-- **RESTful API**: Easy-to-use API for integration with other applications
-- **Configurable**: Environment variables for customization
+The system consists of:
+- **Ingestion Pipeline**: Processes textbook content from `/docs` and `/content` directories
+- **Vector Database**: Stores embeddings for efficient retrieval
+- **Query System**: Retrieves relevant content and generates answers
+- **API Layer**: FastAPI endpoints for web interface
+- **Web Chat Interface**: React component integrated into Docusaurus
 
-## Prerequisites
+## Setup Instructions
 
-- Python 3.8 or higher
-- pip package manager
+### 1. Install Dependencies
 
-## Installation
-
-1. Navigate to the rag_system directory:
 ```bash
 cd rag_system
-```
-
-2. Create a virtual environment (recommended):
-```bash
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-```
-
-3. Install the required packages:
-```bash
 pip install -r requirements.txt
 ```
 
-## Configuration
+### 2. Process Textbook Content
 
-The system can be configured using environment variables:
-
-- `RAG_HOST`: Host address for the API server (default: 0.0.0.0)
-- `RAG_PORT`: Port for the API server (default: 8000)
-- `RAG_DEBUG`: Enable debug mode (default: False)
-- `RAG_CHUNK_SIZE`: Size of text chunks for vector storage (default: 1000)
-- `RAG_SEARCH_K`: Number of documents to retrieve for each query (default: 4)
-
-## Usage
-
-### Starting the Server
+Run the ingestion pipeline to process all markdown files from `/docs` and `/content`:
 
 ```bash
-python main.py
+python ingest.py
 ```
 
-Or using uvicorn directly:
+This will:
+- Find all `.md` files in `/docs` and `/content` directories
+- Split content into chunks (~500 tokens with 50-token overlap)
+- Generate embeddings using Sentence Transformers
+- Store vectors in ChromaDB at `./vector_db`
+
+### 3. Start the API Server
+
 ```bash
-uvicorn main:app --host 0.0.0.0 --port 8000
+uvicorn api.chat:app --host 0.0.0.0 --port 8000
+```
+
+Or run directly:
+```bash
+python api/chat.py
 ```
 
 The API will be available at `http://localhost:8000`
 
-### API Endpoints
+### 4. Start the Docusaurus Website
 
-#### Health Check
-- `GET /health` - Check the health status of the RAG system
-
-#### Ask a Question
-- `POST /ask` - Ask a question about the textbook
-  - Query parameter: `question` (required) - The question to ask
-  - Query parameter: `max_tokens` (optional) - Maximum number of tokens in the response (default: 200)
-  - Query parameter: `temperature` (optional) - Temperature for response generation (default: 0.7)
-
-  Example:
-  ```
-  POST /ask?question=What%20is%20ROS%202?
-  ```
-
-#### Upload Document
-- `POST /upload_document` - Upload additional documents to the knowledge base
-  - Form field: `file` - The document to upload (supports .txt, .md, .markdown)
-
-### Example Usage
-
-#### Using curl:
+In a new terminal, from the project root:
 
 ```bash
-# Ask a question
-curl -X POST "http://localhost:8000/ask?question=Explain%20digital%20twins%20in%20robotics"
-
-# Upload a document
-curl -X POST "http://localhost:8000/upload_document" -F "file=@path/to/your/document.md"
+npm install
+npm start
 ```
 
-## System Architecture
+The website will be available at `http://localhost:3000`
 
-The RAG system consists of several components:
+## Using the Chatbot
 
-1. **Data Loader**: Loads and preprocesses the textbook content
-2. **Vector Store**: Stores document embeddings for fast retrieval
-3. **Embedding Model**: Converts text to vector representations
-4. **Language Model**: Generates responses based on retrieved documents
-5. **API Layer**: Provides RESTful endpoints for interaction
+1. Navigate to any page on the Docusaurus website
+2. Look for the floating "🤖 Ask the Book" button at the bottom-right
+3. Click the button to open the chat interface
+4. Type your question about the textbook content
+5. The chatbot will respond based only on information from the textbook
 
-## How It Works
+## API Endpoints
 
-1. **Initialization**: During startup, the system loads all textbook content, splits it into chunks, and creates embeddings
-2. **Query Processing**: When a question is asked, the system:
-   - Converts the question to an embedding
-   - Finds the most relevant document chunks using the vector store
-   - Combines the question with relevant context
-   - Generates a response using the language model
-3. **Response**: The system returns the generated answer along with source information
+- `POST /chat`: Send a message and receive a response
+- `GET /`: API information
+- `GET /health`: Health check
 
-## Customization
+Example API request:
+```bash
+curl -X POST http://localhost:8000/chat \
+  -H "Content-Type: application/json" \
+  -d '{"message": "Explain ROS 2 concepts"}'
+```
 
-To customize the system for your own content:
+## Constitution Compliance
 
-1. Modify the file paths in `data_loader.py` to point to your documents
-2. Adjust the configuration parameters in `config.py` as needed
-3. Change the embedding or language models in the configuration
-
-## Troubleshooting
-
-- If you encounter memory issues, try reducing the `max_new_tokens` parameter or using a smaller language model
-- If responses are too generic, try adjusting the `temperature` parameter
-- If the system can't find relevant information, verify that your documents were loaded correctly
-
-## Performance Considerations
-
-- The initial startup may take some time as the system loads and embeds all documents
-- Response time depends on the complexity of the question and the size of the knowledge base
-- For large document collections, consider using more powerful embedding or language models
-
-## Security
-
-- In production, ensure proper authentication and rate limiting
-- Validate and sanitize all user inputs
-- Consider using HTTPS for API communication
-- Review the CORS settings in production environments
+The chatbot strictly follows these rules:
+- Answers only from textbook content
+- Responds with "This topic is not covered in the book" when information is missing
+- Uses simple, beginner-friendly English
+- Provides step-by-step explanations
+- Includes humanoid robotics examples when relevant
+- No hallucinations or external information

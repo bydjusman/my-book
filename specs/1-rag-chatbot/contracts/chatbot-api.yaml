@@ -1,0 +1,277 @@
+openapi: 3.0.0
+info:
+  title: Physical AI & Humanoid Robotics RAG Chatbot API
+  description: API for the RAG chatbot that answers student questions based on the textbook "Physical AI & Humanoid Robotics"
+  version: 1.0.0
+servers:
+  - url: http://localhost:8000/api
+    description: Local development server
+  - url: https://chatbot.example.com/api
+    description: Production server
+
+paths:
+  /chat:
+    post:
+      summary: Process a student question and return a textbook-based answer
+      description: Takes a natural language question from a student and returns an answer based only on the textbook content
+      operationId: processQuestion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionRequest'
+      responses:
+        '200':
+          description: Successful response with answer and sources
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Chat
+
+  /validate:
+    post:
+      summary: Validate if a question is within textbook scope
+      description: Checks if a question can be answered using only the textbook content
+      operationId: validateQuestion
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QuestionRequest'
+      responses:
+        '200':
+          description: Validation result
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationResponse'
+        '400':
+          description: Invalid request format
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Validation
+
+  /health:
+    get:
+      summary: Health check for the service
+      description: Returns the health status of the chatbot service
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+        '500':
+          description: Service is unhealthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Health
+
+  /modules:
+    get:
+      summary: Get list of available textbook modules
+      description: Returns the list of modules covered in the textbook that the chatbot can answer questions about
+      operationId: getModules
+      responses:
+        '200':
+          description: List of available modules
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModulesResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      tags:
+        - Modules
+
+components:
+  schemas:
+    QuestionRequest:
+      type: object
+      properties:
+        question:
+          type: string
+          description: The student's question in natural language
+          example: "Explain how ROS 2 handles message passing between nodes"
+        session_id:
+          type: string
+          description: Optional session identifier to maintain conversation context
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440000"
+      required:
+        - question
+      example:
+        question: "Explain how ROS 2 handles message passing between nodes"
+        session_id: "550e8400-e29b-41d4-a716-446655440000"
+
+    ChatResponse:
+      type: object
+      properties:
+        answer:
+          type: string
+          description: The chatbot's answer to the question based on textbook content
+          example: "In ROS 2, message passing between nodes is handled through a publish-subscribe model where nodes communicate by publishing messages to topics that other nodes subscribe to..."
+        sources:
+          type: array
+          items:
+            $ref: '#/components/schemas/SourceChunk'
+          description: List of textbook chunks used to generate the answer
+        question_id:
+          type: string
+          description: Unique identifier for the question
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440001"
+        confidence:
+          type: number
+          description: Confidence score for the response (0-1)
+          minimum: 0
+          maximum: 1
+          example: 0.85
+      required:
+        - answer
+        - sources
+        - question_id
+        - confidence
+
+    SourceChunk:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the textbook chunk
+          format: uuid
+          example: "550e8400-e29b-41d4-a716-446655440002"
+        content:
+          type: string
+          description: The text content of the source chunk
+          example: "ROS 2 implements a publish-subscribe communication pattern where nodes publish messages to topics and other nodes subscribe to those topics to receive the messages..."
+        module:
+          type: string
+          description: The textbook module this chunk belongs to
+          enum: [ROS 2, Gazebo & Unity, NVIDIA Isaac, Vision-Language-Action]
+          example: "ROS 2"
+        page_reference:
+          type: string
+          description: Reference to the original textbook location
+          example: "Chapter 3, Section 3.2"
+
+    ValidationResponse:
+      type: object
+      properties:
+        is_valid:
+          type: boolean
+          description: Whether the question is within textbook scope
+          example: true
+        message:
+          type: string
+          description: Explanation of validation result
+          example: "Question is about ROS 2 concepts covered in the textbook"
+        suggested_topics:
+          type: array
+          items:
+            type: string
+          description: Suggested topics if the question is out of scope
+          example: ["ROS 2 basics", "Node communication", "Message passing"]
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+          example: "Internal server error occurred"
+        error_code:
+          type: string
+          description: Error code for the specific error
+          example: "INTERNAL_ERROR"
+        timestamp:
+          type: string
+          description: Timestamp of the error in ISO 8601 format
+          format: date-time
+          example: "2023-12-18T10:30:00Z"
+
+    HealthResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          description: Health status of the service
+          enum: [healthy, unhealthy]
+          example: "healthy"
+        version:
+          type: string
+          description: Version of the service
+          example: "1.0.0"
+        timestamp:
+          type: string
+          description: Current timestamp in ISO 8601 format
+          format: date-time
+          example: "2023-12-18T10:30:00Z"
+
+    ModulesResponse:
+      type: object
+      properties:
+        modules:
+          type: array
+          items:
+            type: string
+          description: List of available textbook modules
+          example: ["ROS 2", "Gazebo & Unity", "NVIDIA Isaac", "Vision-Language-Action"]
+        total_modules:
+          type: integer
+          description: Total number of available modules
+          example: 4
+
+  parameters:
+    SessionId:
+      name: session_id
+      in: query
+      required: false
+      description: Session identifier to maintain conversation context
+      schema:
+        type: string
+        format: uuid
+
+tags:
+  - name: Chat
+    description: Chatbot question and response endpoints
+  - name: Validation
+    description: Question validation endpoints
+  - name: Health
+    description: Service health and status endpoints
+  - name: Modules
+    description: Textbook modules information endpoints

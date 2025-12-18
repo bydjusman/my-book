@@ -5,7 +5,8 @@
       "Bash(node scripts/validate-content.js)",
       "Bash(dir rag_system)",
       "Bash(.specify/scripts/powershell/create-new-feature.ps1 -Json \"/sp.specify Module 2: The Digital Twin (Gazebo & Unity)\n\nTarget audience:\nCS students learning robot simulation for the first time\n\nFocus:\nTeach how digital twins and simulation environments are used to test humanoid robots safely.\n\nKey topics:\n- Concept of a digital twin\n- Physics simulation in Gazebo (gravity, joints, collisions)\n- Environment and interaction design\n- High-fidelity visualization using Unity\n- Sensor simulation: LiDAR, depth cameras, IMUs\n\nSuccess criteria:\n- Reader understands why simulation is required before real deployment\n- Reader can explain differences between Gazebo and Unity\n- Reader understands how sensors are simulated\n\nConstraints:\n- Word count: 1500–2000 words\n- Format: Markdown\n- Beginner-friendly explanations\n- No equations or physics math\n\nNot building:\n- Game development tutorials\n- Real-time hardware calibration\n- Custom physics engines\" -Json -Number 1 -ShortName \"digital-twin-simulation\" \"Module 2: The Digital Twin (Gazebo & Unity)\")",
-      "Bash(git fetch --all --prune)"
+      "Bash(git fetch --all --prune)",
+      "Bash(mkdir -p specs/2-digital-twin-simulation)"
     ]
   }
 }
