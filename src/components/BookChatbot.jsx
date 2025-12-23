@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../css/chatbot.css';
+import './BookChatbot.css';
 
 const BookChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,8 +33,8 @@ const BookChatbot = () => {
     setIsLoading(true);
 
     try {
-      // Call the backend API - configurable for localhost development
-      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || '';
+      // Call the backend API - configurable with default for localhost development
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
       const response = await fetch(`${API_BASE_URL}/chat`, {
         method: 'POST',
         headers: {
